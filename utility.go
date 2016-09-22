@@ -77,7 +77,7 @@ func run_test(remote string, test string) time.Duration{
 
 func main() {
   var profile = flag.String("region", "default", "region to run test [us, usw, eu] \n\toptional, if not passed will route to nearest")
-  var test = flag.String("test", "status", "test to run [selenium, status] \n\toptional, if not passed will default to selenium")
+  var test = flag.String("test", "selenium", "test to run [selenium, status] \n\toptional, if not passed will default to selenium")
   flag.Parse()
 
   remotes := make(map[string][]string)
