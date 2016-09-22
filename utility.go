@@ -43,7 +43,7 @@ func run_test(remote string) {
 }
 
 func main() {
-  remotes := [5]string{
+  remotes := [20]string{
     "http://hub.browserstack.com",
     "https://hub.browserstack.com",
     "http://hub.browserstack.com:4444",
