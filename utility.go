@@ -7,6 +7,7 @@ import (
   "os"
   "flag"
   "sort"
+  "net/http"
 
   "github.com/tebeka/selenium"
 )
@@ -22,7 +23,7 @@ func (p PairList) Len() int { return len(p) }
 func (p PairList) Less(i, j int) bool { return p[i].Value < p[j].Value }
 func (p PairList) Swap(i, j int){ p[i], p[j] = p[j], p[i] }
 
-func run_test(remote string) time.Duration{
+func run_selenium(remote string) time.Duration{
   caps := selenium.Capabilities{
     "browserName": "chrome",
     "os": "OSX",
@@ -43,7 +44,7 @@ func run_test(remote string) time.Duration{
   elem, _ := wd.FindElement(selenium.ByName, "q")
   elem.Clear()
   start := time.Now()
-  for j := 0; j < 10; j++ {
+  for j := 0; j < 100; j++ {
     elem.SendKeys("a")
   }
   diff := time.Since(start)
@@ -52,8 +53,31 @@ func run_test(remote string) time.Duration{
   return diff
 }
 
+func run_status(remote string) time.Duration{
+  start := time.Now()
+
+  for j := 0; j < 100; j++ {
+    response, err := http.Get(remote + "/wd/hub/status")
+    if err == nil {
+      defer response.Body.Close()
+    }
+  }
+
+  diff := time.Since(start)
+  return diff
+}
+
+func run_test(remote string, test string) time.Duration{
+  if test == "status" {
+    return run_status(remote)
+  } else {
+    return run_selenium(remote)
+  }
+}
+
 func main() {
   var profile = flag.String("region", "default", "region to run test [us, usw, eu] \n\toptional, if not passed will route to nearest")
+  var test = flag.String("test", "status", "test to run [selenium, status] \n\toptional, if not passed will default to selenium")
   flag.Parse()
 
   remotes := make(map[string][]string)
@@ -95,7 +119,7 @@ func main() {
 
   fmt.Printf("%d/%d Completed\n", 0, rl)
   for i := 0; i < rl; i++ {
-    pl[i] = Pair{remotes[*profile][i], run_test(remotes[*profile][i])}
+    pl[i] = Pair{remotes[*profile][i], run_test(remotes[*profile][i], *test)}
     fmt.Printf("%d/%d Completed\n", i+1, rl)
   }
 
