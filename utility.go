@@ -43,12 +43,30 @@ func run_test(remote string) {
 }
 
 func main() {
-  remotes := [5]string{
+  remotes := [20]string{
     "http://hub.browserstack.com",
     "https://hub.browserstack.com",
     "http://hub.browserstack.com:4444",
     "http://hub-cloud.browserstack.com",
     "https://hub-cloud.browserstack.com",
+
+    "http://hub-eu.browserstack.com",
+    "https://hub-eu.browserstack.com",
+    "http://hub-eu.browserstack.com:4444",
+    "http://hub-cloud-eu.browserstack.com",
+    "https://hub-cloud-eu.browserstack.com",
+
+    "http://hub-us.browserstack.com",
+    "https://hub-us.browserstack.com",
+    "http://hub-us.browserstack.com:4444",
+    "http://hub-cloud-us.browserstack.com",
+    "https://hub-cloud-us.browserstack.com",
+
+    "http://hub-usw.browserstack.com",
+    "https://hub-usw.browserstack.com",
+    "http://hub-usw.browserstack.com:4444",
+    "http://hub-cloud-usw.browserstack.com",
+    "https://hub-cloud-usw.browserstack.com",
   }
 
   for i := 0; i < len(remotes); i++ {
